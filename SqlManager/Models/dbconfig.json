@@ -1,0 +1,161 @@
+[
+  {
+      "LEVEL": 1,
+      "IS_OPEN": false,
+      "NODE_NAME": "银宝山新",
+      "CONN_STRING": null,
+      "NoteIcon": "../../img/Folder_32x32.png",
+      "SqlType": null,
+      "Type": null,
+      "Children": [
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "UAT",
+              "CONN_STRING": "DATA SOURCE=10.90.1.55:1521/mes2;PASSWORD=mes123;USER ID=mes;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          },
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "正式",
+              "CONN_STRING": null,
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          }
+      ],
+      "Tables": null,
+      "Error": ""
+  },
+  {
+      "LEVEL": 1,
+      "IS_OPEN": false,
+      "NODE_NAME": "测试库",
+      "CONN_STRING": null,
+      "NoteIcon": "../../img/Folder_32x32.png",
+      "SqlType": null,
+      "Type": null,
+      "Children": [
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "Test",
+              "CONN_STRING": "DATA SOURCE=192.168.12.22/orcl;PASSWORD=admin;USER ID=scott;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          }
+      ],
+      "Tables": null,
+      "Error": ""
+  },
+  {
+      "LEVEL": 1,
+      "IS_OPEN": false,
+      "NODE_NAME": "内部",
+      "CONN_STRING": "",
+      "NoteIcon": "../../img/Folder_32x32.png",
+      "SqlType": "Oracle",
+      "Type": null,
+      "Children": [
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "beta环境-基地",
+              "CONN_STRING": "DATA SOURCE=10.16.35.232:1606/wxmestst;PASSWORD=mesprotst;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          },
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "beta环境-中心",
+              "CONN_STRING": "DATA SOURCE=10.16.9.24:1603/SMESUAT2;PASSWORD=mesprortm2;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          },
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "开发环境",
+              "CONN_STRING": "DATA SOURCE=10.16.9.24:1601/mestst9;PASSWORD=mesprotst123;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          },
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "内部-机电-SIT",
+              "CONN_STRING": "DATA SOURCE=10.16.35.233:1530/smeststsit;PASSWORD=Mespro#2020;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          },
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "内部-机电-SIT-INTERFACE",
+              "CONN_STRING": "DATA SOURCE=10.16.35.233:1530/smeststsit;PASSWORD=Mespro#2020;USER ID=mespro_interface;PERSIST SECURITY INFO=True;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          },
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "内部-机电-UAT",
+              "CONN_STRING": "DATA SOURCE=10.16.153.48:1530/smeststuat;PASSWORD=Mespro#2020;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          },
+          {
+              "LEVEL": 2,
+              "IS_OPEN": false,
+              "NODE_NAME": "内部-机电-压缩机",
+              "CONN_STRING": "DATA SOURCE=sdsmeshscan.midea.com:1529/sdsmesh_scn;PASSWORD=smes_2020!JD;USER ID=mesproread;PERSIST SECURITY INFO=True;Connection Timeout=9000",
+              "NoteIcon": "../../img/数据库.png",
+              "SqlType": "Oracle",
+              "Type": null,
+              "Children": [],
+              "Tables": null,
+              "Error": ""
+          }
+      ],
+      "Tables": null,
+      "Error": ""
+  }
+]

@@ -1,0 +1,284 @@
+﻿<Window
+    x:Class="SqlManager.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:controlsz="clr-namespace:Xu.Common;assembly=Xu.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SqlManager"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
+    Title="SQL MANAGER"
+    Width="1040"
+    Height="690"
+    AllowsTransparency="True"
+    Background="{x:Null}"
+    BorderThickness="0"
+    FontFamily=".PingFang SC,Microsoft YaHei UI"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    WindowState="Maximized"
+    mc:Ignorable="d">
+
+    <Border
+        Margin="5 5 5 49"
+        Name="border1"
+        Background="#FFF"
+        BorderThickness="0"
+        Opacity="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="3"  Panel.ZIndex="9999" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Image Source="../img/插头.png"/>
+                <TextBlock Text="Connection  " VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Viewbox Height="20" >
+                    <ComboBox FontSize="20" MinWidth="250" ItemsSource="{Binding cb_connection_itemsource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding cb_selected_connection_itemsource, Mode= TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Viewbox>
+            </StackPanel>
+
+            <Border Grid.Row="0" Grid.Column="0" Background="#dddddd">
+                <Image Source="../img/logo.ico" Margin="5"/>
+            </Border>
+
+
+            <Border Grid.Row="0" Grid.Column="1"
+                MouseRightButtonDown="bodyDoubleClick"
+                MouseLeftButtonDown="MoveWindow"
+                Name="bd2"
+                Grid.ColumnSpan="2"
+                Background="#dddddd"
+                BorderThickness="0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <Button x:Name="setting" Style="{StaticResource settingBtnStyle}"  Margin="10,3,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Click="settingClick"/>
+
+                    <Button
+                        Style="{DynamicResource CloseBorderStyle}"
+                        x:Name="MINN"
+                         Margin="10,3,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Background="#FFEFC000"
+                        Click="MinWindow"
+                        ToolTip="最小化" />
+                    <Button
+                        Style="{DynamicResource BorderStyle}"
+                        x:Name="MAXX"
+                         Margin="10,3,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Background="#FF00D00F"
+                        Click="MaxWindow"
+                        ToolTip="最大化" />
+                    <Button
+                        Style="{DynamicResource CloseBorderStyle}"
+                        x:Name="CLOSE"
+                        Width="13"
+                        Height="13"
+                        Margin="10,3,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Background="#FFB8B8B8"
+                        Click="CloseWindow"
+                        ToolTip="关闭" />
+                </StackPanel>
+            </Border>
+            <Grid Grid.Row="1" Grid.ColumnSpan="3" Background="#dddddd">
+                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Menu DockPanel.Dock="Top" Background="#dddddd">
+                        <MenuItem Header="File" Background="#dddddd">
+                            <MenuItem Header="New">
+                                <MenuItem Header="SQL" Click="NewFileClick">
+                                    <MenuItem.Icon>
+                                        <Image Source="../img/SQL.png" Height="18"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="File">
+                                    <MenuItem.Icon>
+                                        <Image Source="../img/file.png" Height="18"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+                            <MenuItem Header="Open Folder" Command="{Binding CmdOpenFolder}">
+                                <MenuItem.Icon>
+                                    <Image Source="../img/OpenFolder_32x32.png" Height="18"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Exit" Click="CloseWindow"></MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="Edit" Background="#dddddd">
+                            
+                        </MenuItem>
+                        <MenuItem Header="Database" Background="#dddddd">
+                            <MenuItem Header="New Connection" Command="{Binding AddConn}">
+                                <MenuItem.Icon>
+                                    <Image Source="../img/插头.png" Height="18"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Export Data">
+                                <MenuItem.Icon>
+                                    <Image Source="../img/data_dark.png" Height="18"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="SQL" Background="#dddddd">
+                            <MenuItem Header="SQL Formatter">
+                                <MenuItem Header="Format Document" Command="{Binding CmdFormatFullSql}">
+                                    <MenuItem.Icon>
+                                        <Image Source="../img/format_document.png" Height="18"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="Format Selection" Command="{Binding CmdFormatSelectionSql}">
+                                    <MenuItem.Icon>
+                                        <Image Source="../img/format_selection.png" Height="18"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+                        </MenuItem>
+                    </Menu>
+                </DockPanel>
+            </Grid>
+
+            <StackPanel  Grid.Row="2" Grid.Column="0" Grid.RowSpan="2"
+                Background="#dddddd">
+                <Button Style="{StaticResource FileBtnStyle}" Width="30" Height="30" Margin="5" Click="NewFileClick"/>
+                <Button Style="{StaticResource ServiceBtnStyle}" Width="30" Height="30" Margin="5"/>
+                <Button Style="{StaticResource ModelBtnStyle}" Width="30" Height="30" Margin="5"/>
+                <Button Style="{StaticResource DataBtnStyle}" Width="30" Height="30" Margin="5" Click="DataClick"/>
+            </StackPanel>
+            <Grid  Grid.Row="2" Grid.Column="1" Grid.RowSpan="2"
+                Background="#dddddd">
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <TreeView
+                                    VirtualizingStackPanel.IsVirtualizing="True"
+                                    VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                    MouseLeftButtonDown="tree_MouseLeftButtonDown"
+                                    Name="tree"
+                                    Grid.Row="0"
+                                    BorderBrush="#B9B9B9"
+                                    BorderThickness="0"
+                                    ItemsSource="{Binding TreeSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    MouseRightButtonDown="tree_MouseRightButtonDown"
+                                    ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                    TreeViewItem.Collapsed="HierarchicalDataTemplate_Collapsed"
+                                    SelectedItemChanged="tree_SelectedItemChanged">
+                        <TreeView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="打开连接" Command="{Binding OpenLink}"/>
+                                <MenuItem Header="关闭连接" Command="{Binding CloseLink}"/>
+                                <MenuItem Header="新增" Command="{Binding AddChildren}"/>
+                                <MenuItem Header="编辑" Command="{Binding EditNode}"/>
+                                <MenuItem Header="表结构" Command="{Binding OpenTableConstruct}"/>
+                                <MenuItem Header="批量生成数据" Command="{Binding CmdCreateData}"/>
+                            </ContextMenu>
+                        </TreeView.ContextMenu>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image
+                                                Width="16"
+                                                Height="16"
+                                                Margin="0,0,2,2"
+                                                VerticalAlignment="Center"
+                                                Source="{Binding NoteIcon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding NODE_NAME}" />
+                                    <StackPanel.ToolTip>
+                                        <TextBlock
+                                                    MaxWidth="200"
+                                                    VerticalAlignment="Center"
+                                                    Text="{Binding CONN_STRING}"
+                                                    TextWrapping="Wrap" />
+                                    </StackPanel.ToolTip>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                    <Border Grid.Row="1">
+                        <TextBox  Text="{Binding QueryTableText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource MahApps.Styles.TextBox.Search}" mah:TextBoxHelper.ButtonCommand="{Binding CmdQueryTable}" BorderThickness="0" Background="#f1f1f1"/>
+                    </Border>
+                </Grid>
+            </Grid>
+            
+            <ContentControl Name="zz" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+            <Border
+                MouseLeftButtonDown="MoveWindow"
+                Name="bd1"
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="0,0,0,0"
+                Background="#ececec"
+                BorderThickness="0" />
+            <Grid Grid.Row="3" Grid.RowSpan="2" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="7*"/>
+                </Grid.ColumnDefinitions>
+                <TabControl
+                    SelectionChanged="tabcontol_SelectionChanged"
+                    x:Name="tabcontol"
+                    Margin="0,-30,0,0"
+                    Background="Transparent" Grid.Row="0" Grid.ColumnSpan="2">
+                    <controlsz:TabItemClose x:Name="MakeData_item" Header="虚拟数据" Height="30" BorderThickness="0" MinWidth="100" Visibility="Collapsed">
+                        <Grid Margin="-3">
+                            <ContentControl Name="MakeData"/>
+                        </Grid>
+                    </controlsz:TabItemClose>
+                </TabControl>
+
+                <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                    <TabControl x:Name="outputtab" Margin="-3, -3, 0, 0" TabStripPlacement="Bottom" Height="25" GotFocus="outputtab_GotFocus">
+                        <TabItem Style="{DynamicResource TabItemNormal}" Header="输出" Height="25" MinWidth="50" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Background="#007acc">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Style="{DynamicResource CloseBorderStyle}" Margin="0,0,10,0" Click="Output_Click"/>
+                                    </StackPanel>
+                                </Border>
+                                <TextBox TextChanged="console_TextChanged" IsReadOnly="True" Grid.Row="1"  Width="auto" x:Name="console" AcceptsTab="True" Height="auto"  Background="#fdfdfd" Foreground="#073642" FontSize="13" FontFamily="Consolas" BorderThickness="0"  AcceptsReturn="True" TextWrapping="Wrap">
+
+                                </TextBox>
+                            </Grid>
+
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="3" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="300" />
+                </Grid.ColumnDefinitions>
+                <ContentControl
+                    Name="right"
+                    Grid.Column="1"
+                    Background="Black" />
+            </Grid>
+
+        </Grid>
+    </Border>
+
+</Window>

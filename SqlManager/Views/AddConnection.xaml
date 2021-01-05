@@ -1,0 +1,36 @@
+﻿<mah:MetroWindow x:Class="SqlManager.AddConnection"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SqlManager"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="添加连接" Height="240" Width="500">
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="层级" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Width="50"/>
+                <ComboBox x:Name="levels" Width="100" SelectedValue="Key"/>
+                <TextBlock x:Name="level" VerticalAlignment="Center" Margin="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="名称" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Width="50"/>
+                <TextBox x:Name="name"  Width="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="库类型" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Width="50"/>
+                <ComboBox x:Name="dbtype"  Width="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="字符串" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Width="50"/>
+                <TextBox x:Name="connstr"  Width="400"/>
+            </StackPanel>
+            <StackPanel Margin="15">
+                <Button x:Name="commit" Content="确定" Width="100" Style="{DynamicResource MahApps.Styles.Button.Dialogs.AccentHighlight}" Click="commit_Click"/>
+            </StackPanel>
+        </StackPanel>
+        
+    </Grid>
+</mah:MetroWindow>

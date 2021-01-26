@@ -19,7 +19,7 @@ using GenerateToolbox.Models;
 
 namespace SqlManager.ViewModel
 {
-    class MainView : ValidationBase
+    public class MainView : ValidationBase
     {
         #region construct
         MainWindow plugin;
@@ -32,15 +32,15 @@ namespace SqlManager.ViewModel
         }
 
         #region init
-        private void InitDatabase(ObservableCollection<TreeList> trees, List<Key_Value> keyvalues)
+        private void InitDatabase(ObservableCollection<TreeList> trees, List<dbcfg> keyvalues)
         {
-            if (keyvalues == null) keyvalues = new List<Key_Value>();
+            if (keyvalues == null) keyvalues = new List<dbcfg>();
             foreach (var item in trees)
             {
 
                 if (item.LEVEL == TreeLevel.Database && !string.IsNullOrEmpty(item.CONN_STRING))
                 {
-                    keyvalues.Add(new Key_Value { value = keyvalues.Count + 1, label = item.NODE_NAME, Value = item.CONN_STRING });
+                    keyvalues.Add(new dbcfg { db_name = item.NODE_NAME, connection_string = item.CONN_STRING, dbtype = item.Type.Value });
                 }
                 if (item.Children != null && item.Children.Count != 0)
                 {
@@ -93,8 +93,8 @@ namespace SqlManager.ViewModel
         }
 
 
-        private List<Key_Value> _cb_connection_itemsource;
-        public List<Key_Value> cb_connection_itemsource
+        private List<dbcfg> _cb_connection_itemsource;
+        public List<dbcfg> cb_connection_itemsource
         {
             get => _cb_connection_itemsource;
             set
@@ -105,8 +105,8 @@ namespace SqlManager.ViewModel
         }
 
         public bool IsChange { get; set; } = true;
-        private Key_Value _cb_selected_connection_itemsource;
-        public Key_Value cb_selected_connection_itemsource
+        private dbcfg _cb_selected_connection_itemsource;
+        public dbcfg cb_selected_connection_itemsource
         {
             get => _cb_selected_connection_itemsource;
             set
@@ -116,7 +116,7 @@ namespace SqlManager.ViewModel
                 if (value != null && IsChange)
                 {
                     var page = GenerateToolbox.Models.FindNewPage.GetPage(MainWindow.CurrentTabItem);
-                    if (page != null) page.CurrentDatabase = new KeyValue<string, string>(value.label, value.Value);
+                    if (page != null) page.CurrentDatabase = value;
                 }
             }
         }
@@ -454,7 +454,7 @@ namespace SqlManager.ViewModel
 
 
 
-        private void Console(string content)
+        public void Console(string content)
         {
             plugin.console.Text += $"1>{DateTime.Now}：{content}\r\n";
             plugin.console.ScrollToEnd();
@@ -496,7 +496,7 @@ namespace SqlManager.ViewModel
             ExecuteDelegate = x => {
                 try
                 {
-                    var item = GenerateToolbox.Models.TableConstruct.Init(SelectedNode.NODE_NAME, plugin);
+                    var item = GenerateToolbox.Models.TableConstruct.Init(SelectedNode, plugin);
                     item.Header = SelectedNode.NODE_NAME;
                     item.MinWidth = 100;
                     item.Height = 30;
@@ -526,9 +526,14 @@ namespace SqlManager.ViewModel
                 ///打开所有表
                 try
                 {
-                    using (var db = SugarContext.OracleContextParams(SelectedNode.CONN_STRING))
+                    using (var db = SugarContext.GetContext(SelectedNode.CONN_STRING, SelectedNode.Type.Value))
                     {
-                        var tables = db.SqlQueryable<Tables>("select * from all_tables").ToList();
+                        var sql = @"select * from all_tables";
+                        if(SelectedNode.Type == SqlSugar.DbType.SqlServer)
+                        {
+                            sql = "select name as TABLE_NAME, type_desc as OWNER from sys.tables";
+                        }
+                        var tables = db.SqlQueryable<Tables>(sql).ToList();
                         var names = tables.GroupBy(c => c.OWNER).Select(c => new Tables
                         {
                             OWNER = c.Key,
@@ -543,6 +548,7 @@ namespace SqlManager.ViewModel
                             TreeList list = new TreeList();
                             list.LEVEL = TreeLevel.Folder;
                             list.NODE_NAME = ds.OWNER;
+                            list.ParentNode = SelectedNode;
                             SelectedNode.Children.Add(list);
 
                             SelectedChildrenList.Add(list);
@@ -553,6 +559,7 @@ namespace SqlManager.ViewModel
                                 TreeList tr = new TreeList();
                                 tr.LEVEL = TreeLevel.Table;
                                 tr.NODE_NAME = table;
+                                tr.ParentNode = list;
                                 list.Children.Add(tr);
                             }
                             //plugin.keywords.Add(list.NODE_NAME);
@@ -609,7 +616,7 @@ namespace SqlManager.ViewModel
                 IsEdit = false;
                 AddConnection window = new AddConnection(this);
                 window.ShowDialog();
-                InitDatabase(TreeSource, cb_connection_itemsource);
+                InitDatabase(TreeSource, null);
             },
             CanExecuteDelegate = o => {
                 return SelectedNode != null && SelectedNode.LEVEL == TreeLevel.File;

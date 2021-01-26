@@ -15,7 +15,7 @@
               "CONN_STRING": "DATA SOURCE=10.90.1.55:1521/mes2;PASSWORD=mes123;USER ID=mes;Connection Timeout=9000",
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""
@@ -27,7 +27,7 @@
               "CONN_STRING": null,
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""
@@ -44,20 +44,32 @@
       "NoteIcon": "../../img/Folder_32x32.png",
       "SqlType": null,
       "Type": null,
-      "Children": [
-          {
-              "LEVEL": 2,
-              "IS_OPEN": false,
-              "NODE_NAME": "Test",
-              "CONN_STRING": "DATA SOURCE=192.168.12.22/orcl;PASSWORD=admin;USER ID=scott;Connection Timeout=9000",
-              "NoteIcon": "../../img/数据库.png",
-              "SqlType": "Oracle",
-              "Type": null,
-              "Children": [],
-              "Tables": null,
-              "Error": ""
-          }
-      ],
+    "Children": [
+      {
+        "LEVEL": 2,
+        "IS_OPEN": false,
+        "NODE_NAME": "Test",
+        "CONN_STRING": "DATA SOURCE=192.168.12.22/orcl;PASSWORD=admin;USER ID=scott;Connection Timeout=9000",
+        "NoteIcon": "../../img/数据库.png",
+        "SqlType": "Oracle",
+        "Type": 3,
+        "Children": [],
+        "Tables": null,
+        "Error": ""
+      },
+      {
+        "LEVEL": 2,
+        "IS_OPEN": false,
+        "NODE_NAME": "MsSql",
+        "CONN_STRING": "Data Source=47.107.186.141;Initial Catalog=db;User ID=sa;Password=jiangxinji.123",
+        "NoteIcon": "../../img/数据库.png",
+        "SqlType": "MsSql",
+        "Type": 1,
+        "Children": [],
+        "Tables": null,
+        "Error": ""
+      }
+    ],
       "Tables": null,
       "Error": ""
   },
@@ -77,7 +89,7 @@
               "CONN_STRING": "DATA SOURCE=10.16.35.232:1606/wxmestst;PASSWORD=mesprotst;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""
@@ -89,7 +101,7 @@
               "CONN_STRING": "DATA SOURCE=10.16.9.24:1603/SMESUAT2;PASSWORD=mesprortm2;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""
@@ -101,7 +113,7 @@
               "CONN_STRING": "DATA SOURCE=10.16.9.24:1601/mestst9;PASSWORD=mesprotst123;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""
@@ -113,7 +125,7 @@
               "CONN_STRING": "DATA SOURCE=10.16.35.233:1530/smeststsit;PASSWORD=Mespro#2020;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""
@@ -125,7 +137,7 @@
               "CONN_STRING": "DATA SOURCE=10.16.35.233:1530/smeststsit;PASSWORD=Mespro#2020;USER ID=mespro_interface;PERSIST SECURITY INFO=True;Connection Timeout=9000",
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""
@@ -137,7 +149,7 @@
               "CONN_STRING": "DATA SOURCE=10.16.153.48:1530/smeststuat;PASSWORD=Mespro#2020;USER ID=mespro;PERSIST SECURITY INFO=True;Connection Timeout=9000",
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""
@@ -149,7 +161,7 @@
               "CONN_STRING": "DATA SOURCE=sdsmeshscan.midea.com:1529/sdsmesh_scn;PASSWORD=smes_2020!JD;USER ID=mesproread;PERSIST SECURITY INFO=True;Connection Timeout=9000",
               "NoteIcon": "../../img/数据库.png",
               "SqlType": "Oracle",
-              "Type": null,
+              "Type": 3,
               "Children": [],
               "Tables": null,
               "Error": ""

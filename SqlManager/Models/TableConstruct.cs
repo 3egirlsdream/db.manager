@@ -1,4 +1,5 @@
 ﻿using SqlManager;
+using SqlManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,18 +19,42 @@ namespace GenerateToolbox.Models
 
         }
 
-        public static TabItemClose Init(string NodeName, MainWindow plugin)
+        public static TabItemClose Init(TreeList SelectedNode, MainWindow plugin)
         {
-            using (var db = SugarContext.OracleContext)
+            using (var db = SugarContext.GetContext(SelectedNode.ParentNode.ParentNode.CONN_STRING, SelectedNode.ParentNode.ParentNode.Type.Value))
             {
+                var NodeName = SelectedNode.NODE_NAME;
                 var ls = NodeName.Split('.');
                 if (ls.Length == 2) NodeName = ls[1];
-                var result = db.Ado.GetDataTable("select t.column_name, T.data_length, T.data_type, T.nullable, jt.comments FROM user_tab_columns t INNER JOIN user_col_comments jt ON t.table_name = jt.table_name AND t.column_name = jt.column_name where t.Table_Name='" + NodeName + "' order by t.COLUMN_ID");
+                var sql1 = "select t.column_name, T.data_length, T.data_type, T.nullable, jt.comments FROM user_tab_columns t INNER JOIN user_col_comments jt ON t.table_name = jt.table_name AND t.column_name = jt.column_name where t.Table_Name='" + NodeName + "' order by t.COLUMN_ID";
+                
                 //dg.ItemsSource = result;
-
-                var index = db.Ado.GetDataTable($"SELECT wm_concat(t.column_name) as columns,  t.index_name,  t.table_name, t.descend, i.index_type, i.uniqueness FROM user_ind_columns t, user_indexes i WHERE t.index_name = i.index_name AND t.table_name = upper('{NodeName}') GROUP BY  t.index_name,  t.table_name,  t.descend, i.index_type, i.uniqueness");
+                var sql2 = $"SELECT wm_concat(t.column_name) as columns,  t.index_name,  t.table_name, t.descend, i.index_type, i.uniqueness FROM user_ind_columns t, user_indexes i WHERE t.index_name = i.index_name AND t.table_name = upper('{NodeName}') GROUP BY  t.index_name,  t.table_name,  t.descend, i.index_type, i.uniqueness";
+                
                 //tindex.ItemsSource = index;
+                if(SelectedNode.ParentNode.ParentNode.Type.Value == SqlSugar.DbType.SqlServer)
+                {
+                    sql1 = $@"SELECT
+A.name AS table_name,
+B.name AS column_name,
+b.max_length as data_length,
+d.data_type,
+d.is_nullable as nullable,
+C.value AS comments
+FROM sys.tables A
+INNER JOIN sys.columns B ON B.object_id = A.object_id
+LEFT JOIN sys.extended_properties C ON C.major_id = B.object_id AND C.minor_id = B.column_id
+inner join information_schema.columns d on d.table_name = a.name and d.column_name = b.name
+WHERE A.name = upper('{NodeName}')";
+                    //dg.ItemsSource = result;
 
+                    sql2 = $@"SELECT a.name as index_name FROM sys.sysindexes a
+inner join sys.tables b on a.id = b.object_id
+where a.name = upper('{NodeName}')";
+
+                }
+                var result = db.Ado.GetDataTable(sql1);
+                var index = db.Ado.GetDataTable(sql2);
                 var p_tab = new TabControl();
 
                 var data1 = new DataGrid
@@ -74,18 +99,41 @@ namespace GenerateToolbox.Models
                 
         }
 
-        public static List<TabItem> InitTabItem(string NodeName, MainWindow plugin)
+        public static List<TabItem> InitTabItem(string NodeName, dbcfg cfg, MainWindow plugin)
         {
-            using (var db = SugarContext.OracleContext)
+            using (var db = SugarContext.GetContext(cfg.connection_string, cfg.dbtype))
             {
                 var ls = NodeName.Split('.');
                 if (ls.Length == 2) NodeName = ls[1];
-                var result = db.Ado.GetDataTable("select t.column_name, T.data_length, T.data_type, T.nullable, jt.comments FROM user_tab_columns t INNER JOIN user_col_comments jt ON t.table_name = jt.table_name AND t.column_name = jt.column_name where t.Table_Name=upper('" + NodeName + "') order by t.COLUMN_ID");
+                var sql1 = "select t.column_name, T.data_length, T.data_type, T.nullable, jt.comments FROM user_tab_columns t INNER JOIN user_col_comments jt ON t.table_name = jt.table_name AND t.column_name = jt.column_name where t.Table_Name='" + NodeName + "' order by t.COLUMN_ID";
+
                 //dg.ItemsSource = result;
+                var sql2 = $"SELECT wm_concat(t.column_name) as columns,  t.index_name,  t.table_name, t.descend, i.index_type, i.uniqueness FROM user_ind_columns t, user_indexes i WHERE t.index_name = i.index_name AND t.table_name = upper('{NodeName}') GROUP BY  t.index_name,  t.table_name,  t.descend, i.index_type, i.uniqueness";
 
-                var index = db.Ado.GetDataTable($"SELECT wm_concat(t.column_name) as columns,  t.index_name,  t.table_name, t.descend, i.index_type, i.uniqueness FROM user_ind_columns t, user_indexes i WHERE t.index_name = i.index_name AND t.table_name = upper('{NodeName}') GROUP BY  t.index_name,  t.table_name,  t.descend, i.index_type, i.uniqueness");
-                //tindex.ItemsSource = index;
 
+                if (cfg.dbtype == SqlSugar.DbType.SqlServer)
+                {
+                    sql1 = $@"SELECT
+A.name AS table_name,
+B.name AS column_name,
+b.max_length as data_length,
+d.data_type,
+d.is_nullable as nullable,
+C.value AS comments
+FROM sys.tables A
+INNER JOIN sys.columns B ON B.object_id = A.object_id
+LEFT JOIN sys.extended_properties C ON C.major_id = B.object_id AND C.minor_id = B.column_id
+inner join information_schema.columns d on d.table_name = a.name and d.column_name = b.name
+WHERE A.name = upper('{NodeName}')";
+                    //dg.ItemsSource = result;
+
+                    sql2 = $@"SELECT a.name as index_name FROM sys.sysindexes a
+inner join sys.tables b on a.id = b.object_id
+where a.name = upper('{NodeName}')";
+
+                }
+                var result = db.Ado.GetDataTable(sql1);
+                var index = db.Ado.GetDataTable(sql2);
                 var p_item = new List<TabItem>();
 
                 var data1 = new DataGrid
@@ -126,6 +174,7 @@ namespace GenerateToolbox.Models
             }
 
         }
+
     }
 
 

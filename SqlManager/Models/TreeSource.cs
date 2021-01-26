@@ -72,7 +72,10 @@ namespace SqlManager.Models
             {
                 sqlType = value;
                 NotifyPropertyChanged(nameof(SqlType));
-                Type = value == "Oracle" ? SqlSugar.DbType.Oracle : (value == "MsSql" ? SqlSugar.DbType.SqlServer : SqlSugar.DbType.Oracle);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    Type = value == "Oracle" ? SqlSugar.DbType.Oracle : (value == "MsSql" ? SqlSugar.DbType.SqlServer : SqlSugar.DbType.Oracle);
+                }
             }
         }
         private SqlSugar.DbType? _type;
@@ -102,6 +105,10 @@ namespace SqlManager.Models
                 NotifyPropertyChanged("Children");
             }
         }
+
+        public TreeList ParentNode { get; set; }
+
+
 
         public List<string> Tables { get; set; }
 

@@ -35,7 +35,7 @@ namespace SqlManager
         RightPage page = new RightPage();
         //NewPage.NewPage newPage = new NewPage.NewPage();
         //SqlManager.MakeData.MakeData makeData = new SqlManager.MakeData.MakeData();
-        MainView vm;
+        public MainView vm;
         public MainWindow()
         {
             InitializeComponent();
@@ -309,7 +309,7 @@ namespace SqlManager
             if (page != null)
             {
                 vm.IsChange = false;
-                vm.cb_selected_connection_itemsource = vm.cb_connection_itemsource.FirstOrDefault(x => x.label == page?.CurrentDatabase?.Key);
+                vm.cb_selected_connection_itemsource = vm.cb_connection_itemsource.FirstOrDefault(x => x.db_name == page?.CurrentDatabase?.db_name);
                 vm.IsChange = true;
             }
         }

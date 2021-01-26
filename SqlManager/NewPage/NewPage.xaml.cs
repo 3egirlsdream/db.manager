@@ -32,7 +32,7 @@ namespace SqlManager.NewPage
         public MainWindow plugin;
 
         public string FilePath { get; set; }
-        public KeyValue<string, string> CurrentDatabase { get; set; } = new KeyValue<string, string>("", "");
+        public dbcfg CurrentDatabase { get; set; } = new dbcfg() { connection_string = "", dbtype = SqlSugar.DbType.Oracle,  db_name = "" };
         public NewPage(TabItemClose parentTabItem, MainWindow IPlugin)
         {
             parentTab = parentTabItem;

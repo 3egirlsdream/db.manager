@@ -138,16 +138,23 @@ namespace SqlManager.ViewModel
         {
             ExecuteDelegate = o =>
             {
-                if (string.IsNullOrEmpty(plugin.tb.SelectedText)) return;
-                var item = GenerateToolbox.Models.TableConstruct.InitTabItem(plugin.tb.SelectedText, plugin.plugin);
-                var tabcontol = new TabControl();
-                item.ForEach(c => tabcontol.Items.Add(c));
-                var page = new MahApps.Metro.Controls.MetroWindow();
-                page.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                page.Title = plugin.tb.SelectedText?.ToUpper();
-                page.Width = 600;
-                page.Content = tabcontol;
-                page.ShowDialog();
+                try
+                {
+                    if (string.IsNullOrEmpty(plugin.tb.SelectedText)) return;
+                    var item = GenerateToolbox.Models.TableConstruct.InitTabItem(plugin.tb.SelectedText, plugin.CurrentDatabase, plugin.plugin);
+                    var tabcontol = new TabControl();
+                    item.ForEach(c => tabcontol.Items.Add(c));
+                    var page = new MahApps.Metro.Controls.MetroWindow();
+                    page.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                    page.Title = plugin.tb.SelectedText?.ToUpper();
+                    page.Width = 600;
+                    page.Content = tabcontol;
+                    page.ShowDialog();
+                }
+                catch(Exception ex)
+                {
+                    plugin.plugin.vm.Console(ex.Message);
+                }
             },
             CanExecuteDelegate = x => true
         };
@@ -311,7 +318,7 @@ namespace SqlManager.ViewModel
 
         private void Excute(KeyValue<int, string> query)
         {
-            if (plugin?.CurrentDatabase is null || string.IsNullOrEmpty(plugin.CurrentDatabase.Value))
+            if (plugin?.CurrentDatabase is null || string.IsNullOrEmpty(plugin.CurrentDatabase.connection_string))
             {
                 Warning.ShowMsg("未设置数据库！");
                 return;
@@ -330,7 +337,7 @@ namespace SqlManager.ViewModel
                     }
                 }
             }
-            using (var db = SugarContext.OracleContextParams(plugin.CurrentDatabase.Value))
+            using (var db = SugarContext.GetContext(plugin.CurrentDatabase.connection_string, plugin.CurrentDatabase.dbtype))
             {
                 if (tx.ToUpper().Contains("SELECT"))
                 {
@@ -433,7 +440,7 @@ namespace SqlManager.ViewModel
 
             return Task.Run(() =>
             {
-                using (var db = SugarContext.OracleContextParams(plugin.CurrentDatabase.Value))
+                using (var db = SugarContext.GetContext(plugin.CurrentDatabase.connection_string, plugin.CurrentDatabase.dbtype))
                 {
                     db.Ado.BeginTran();
                     try
@@ -445,7 +452,7 @@ namespace SqlManager.ViewModel
                             var sql = ds;
                             if(query.Value != "Full")
                             {
-                                sql = $"select * from ({ds}) where rownum <= {query.Key}";
+                                sql = $"select t.* from ({ds}) t where {(plugin.CurrentDatabase.dbtype == SqlSugar.DbType.Oracle ? "rownum" : (plugin.CurrentDatabase.dbtype == SqlSugar.DbType.SqlServer ? "@@ROWCOUNT" : ""))} <= {query.Key}";
                             }
                             var result = db.SqlQueryable<dynamic>(sql).ToDataTable();
                             foreach (DataColumn column in result.Columns)

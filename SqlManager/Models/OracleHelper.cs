@@ -47,4 +47,16 @@ namespace SqlManager.Models
 
 
     }
+
+    public class dbcfg
+    {
+        public string connection_string { get; set; }
+        public SqlSugar.DbType dbtype { get; set; }
+        public string db_name { get; set; }
+
+        public override string ToString()
+        {
+            return db_name;
+        }
+    }
 }
